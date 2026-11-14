@@ -1,0 +1,9 @@
+{
+  "githubUser": "AbdulDevHub",
+  "languages": [],
+  "labels": ["good first issue", "help wanted"],
+  "minStars": 50,
+  "maxIssueAgeDays": 60,
+  "digestSize": 15,
+  "coAuthor": false
+}

@@ -1,0 +1,21 @@
+{
+  "name": "open-source-pilot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Find and land good first issues with Claude Code",
+  "scripts": {
+    "find": "tsx src/cli.ts find",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}
