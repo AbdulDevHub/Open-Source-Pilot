@@ -11,8 +11,13 @@
 
 - Phase 3 written: `.claude/skills/oss-find`, `oss-claim`, `oss-fix`, `oss-pr` (validator clean). All model-invoked so Claude can chain them; public actions (claim comment, push, PR, review replies) are gated on the user's explicit OK in the skill text.
 
+- Phase 3 checked by a practice run on reticlehq/reticle#2326 (nothing posted, fork exists at AbdulDevHub/reticle). The fix is local and uncommitted in `repos/reticlehq/reticle` on `fix/2326-look-role-text-filter`. It covers the browser filter and the server forwarding/normaliser, with tests that fail without the fix. Repo `pnpm verify` and e2e were not run.
+
 ## In progress
-- Phase 3 check: dry run on one real issue up to the oss-pr review gate (doubles as the Phase 6 first contribution).
+- Nothing.
+
+## Ideas from the practice run
+- Ranker: penalise huge monorepos (reticle took ~5 min to install and ~11 min to build) and labels like `tracking`, `size:L`, `epic`.
 
 ## Next steps
 - Phase 4: daily Action (digest issue + `refresh-contributions`).

@@ -33,7 +33,7 @@ Prefer a failing test in the repo's existing test style and location. If the iss
 
 ## 3. Fix
 
-Read the surrounding code and match its patterns, naming and error handling. If the issue's own suggestion is wrong or there are two reasonable approaches, pause and tell the user which you'd pick and why before writing much. For hard bugs, raise the effort level.
+Trace the input end to end before deciding the fix is done. A tool option can be dropped by any layer between the caller and the code that uses it, such as a server allowlist or an argument normaliser, so test it at the outermost layer the issue describes. Read the surrounding code and match its patterns, naming and error handling. If the issue's own suggestion is wrong or there are two reasonable approaches, pause and tell the user which you'd pick and why before writing much. For hard bugs, raise the effort level.
 
 ## 4. Verify
 

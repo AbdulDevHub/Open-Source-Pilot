@@ -9,6 +9,8 @@ Turn an issue URL into a fresh branch in a local fork, ready for `oss-fix`.
 
 **Hard rule:** a comment on someone else's issue is public. Show the exact text and wait for the user's OK before posting it.
 
+**Practice or real?** If the user calls it a practice run, test or dry run, post nothing and stop the whole flow at the `oss-pr` review packet. Keep practice cheap: prefer a small repo, and skip the slow full-repo gates.
+
 ```text
 Claim progress:
 - [ ] 1 Issue still free
@@ -36,7 +38,7 @@ Read these from the upstream repo, as far as they exist: `CONTRIBUTING*`, `AI_PO
 npx tsx src/cli.ts policy <owner>/<repo>
 ```
 
-If it says `banned`, stop: the user does not contribute to repos that ban AI help. Then give the user a summary of at most 6 bullets: how to set up and test, the commit style (Conventional Commits? DCO `Signed-off-by`? a CLA?), whether you must be assigned before starting, the AI-policy class and what it asks for, and anything unusual.
+If it says `banned`, stop: the user does not contribute to repos that ban AI help. Then give the user a summary of at most 6 bullets: how to set up and test, the commit style (Conventional Commits? DCO `Signed-off-by`? a CLA?), whether you must be assigned before starting, the AI-policy class and what it asks for, the setup cost (repo size from `gh repo view --json diskUsage`, monorepo build steps), and anything unusual. A large monorepo can take 15+ minutes to install and build before the first test runs, so say so before cloning.
 
 ## 3. Fork and clone
 
