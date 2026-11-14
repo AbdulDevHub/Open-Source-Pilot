@@ -16,7 +16,7 @@ src/score.ts             pure: exclusion filters, weighted 0–100 score, rank, 
 src/policy.ts            pure: AI-policy classifier (sentence-level, text in → class out)
 src/digest.ts            render + upsert the rolling digest issue                  (planned)
 src/contributions.ts     refresh PR statuses in contributions.json                 (planned)
-.claude/skills/oss-*     find, claim, fix, pr: the local Claude workflow           (planned)
+.claude/skills/oss-*     find → claim → fix → pr: the local Claude workflow (pr also handles review feedback)
 .github/workflows/       daily.yml (digest + refresh), pages.yml (site deploy)     (planned)
 site/                    Vite + TS page that reads contributions.json              (planned)
 repos/                   cloned forks of external projects, gitignored

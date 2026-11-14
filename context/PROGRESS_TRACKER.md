@@ -9,11 +9,13 @@
 - Phase 1 done: repo, agent context files, TS/vitest setup, config, empty `contributions.json`.
 - Phase 2 done: `npm run find` (and `--json`) ranks live issues in ~75 s over 40 repos; `npx tsx src/cli.ts policy owner/repo` shows a repo's AI-policy class with evidence. 59 unit tests.
 
+- Phase 3 written: `.claude/skills/oss-find`, `oss-claim`, `oss-fix`, `oss-pr` (validator clean). All model-invoked so Claude can chain them; public actions (claim comment, push, PR, review replies) are gated on the user's explicit OK in the skill text.
+
 ## In progress
-- Nothing. Phase 3 is next.
+- Phase 3 check: dry run on one real issue up to the oss-pr review gate (doubles as the Phase 6 first contribution).
 
 ## Next steps
-- Phase 3: the four `oss-*` skills via `skill-creator-plus`; `oss-find` should call `find --json`.
+- Phase 4: daily Action (digest issue + `refresh-contributions`).
 - Known limits: repo search is `sort:updated`, so results lean to very busy repos; CI is often PENDING (latest commit still running). `unknown` policy repos stay in results with an "[AI policy: check]" flag.
 - Rename the folder `Opensoure Repo` → `Open-Source-Pilot` (user, outside a session), then create the GitHub repo.
 
