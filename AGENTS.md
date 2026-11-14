@@ -15,7 +15,8 @@ A workspace for finding, fixing and landing small open source issues with Claude
 
 ## Commands
 - Install: `npm install`
-- Find issues: `npm run find`
+- Find issues: `npm run find` (`npx tsx src/cli.ts find --json` for machine output; ~75 s, uses GraphQL quota)
+- Check one repo's AI policy: `npx tsx src/cli.ts policy owner/repo`
 - Tests: `npx vitest run`
 - Verify: npx tsc --noEmit && npx vitest run
 - Verify-full: npx tsc --noEmit && npx vitest run && npm run build --prefix site

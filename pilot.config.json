@@ -4,6 +4,8 @@
   "labels": ["good first issue", "help wanted"],
   "minStars": 50,
   "maxIssueAgeDays": 60,
+  "maxRepos": 40,
   "digestSize": 15,
+  "perRepo": 2,
   "coAuthor": false
 }

@@ -65,7 +65,7 @@ You want an easy, repeatable way to land small open source contributions, writte
 4. **Daily Action**: `daily.yml`. *Check: `gh workflow run daily.yml` creates or updates the digest issue.*
 5. **Showcase site and Pages**: `site/` and `pages.yml`. *Check: the deployed page renders the entries in `contributions.json`, and `ui-checker-agent` passes at desktop and phone widths.*
 6. **First real contribution**: use the full loop on one issue. *Check: the PR is opened after your OK and appears on the site.*
-7. **Ship**: README, repo description ("🧭 …"), gitmoji commits, push, enable Pages.
+7. **Ship**: README, repo description ("🤖 …"), gitmoji commits, push, enable Pages.
 
 ## Verification
 - `Verify:` `npx tsc --noEmit && npx vitest run`
