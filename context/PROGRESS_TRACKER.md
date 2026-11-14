@@ -10,7 +10,7 @@ The user is finishing other projects first and will come back when they have tim
 
 - Phases 1–4 done: config and context files; `npm run find` ranker with AI-policy filter (~75 s, 40 repos); the four `oss-*` skills; `digest.yml` Action (manual `workflow_dispatch`, upserts the "Open source picks" issue and refreshes `contributions.json`). 78 unit tests.
 - GitHub: https://github.com/AbdulDevHub/Open-Source-Pilot (public).
-- Practice run on reticlehq/reticle#2326. Nothing was posted. A fork exists at AbdulDevHub/reticle. The fix is local and uncommitted in `repos/reticlehq/reticle` on `fix/2326-look-role-text-filter`. It covers the browser filter, plus the server forwarding and the `{ role, text }` normaliser, with tests that fail without the fix. The repo's `pnpm verify` and e2e were not run. If it's still open when resuming, it could become a real PR (claim the issue first; reticle requires a claim comment and DCO sign-off).
+- Practice run on reticlehq/reticle#2326 (nothing posted). The local clone has been deleted and `repos/` is empty. The fix needs changes in two places: `findIn` in the browser's `dom/query-finders.ts` filters role matches by `text`, and on the server, `tools.ts` forwards `text` and `read/query-shape.ts` keeps the role for `{ role, text }`.
 
 ## Resume checklist
 1. `npm install`, `gh auth status`, then say "find me an issue" in Claude Code here (`oss-find`).
