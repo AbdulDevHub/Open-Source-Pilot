@@ -17,6 +17,8 @@ A workspace for finding, fixing and landing small open source issues with Claude
 - Install: `npm install`
 - Find issues: `npm run find` (`npx tsx src/cli.ts find --json` for machine output; ~75 s, uses GraphQL quota)
 - Check one repo's AI policy: `npx tsx src/cli.ts policy owner/repo`
+- Digest markdown: `npx tsx src/cli.ts find --markdown`; PR status refresh: `npx tsx src/cli.ts refresh-contributions`
+- Run the digest Action: `gh workflow run digest.yml` (manual-only while the project is parked)
 - Tests: `npx vitest run`
 - Verify: npx tsc --noEmit && npx vitest run
 - Verify-full: npx tsc --noEmit && npx vitest run && npm run build --prefix site
@@ -30,6 +32,7 @@ A workspace for finding, fixing and landing small open source issues with Claude
 
 ## Boundaries
 - **Never push, comment on, or open a PR in an external repo without the user's explicit OK** after they've seen the diff and PR text.
+- Run commands from the project root. `vitest.config.ts` limits tests to `test/`; without it vitest runs the suites of every repo in `repos/`.
 - `repos/` holds other people's code (gitignored). Never commit it here, never edit their CI or licence files unless the issue asks for it.
 - No secrets in committed files. Local tokens go in `.env` (gitignored).
 

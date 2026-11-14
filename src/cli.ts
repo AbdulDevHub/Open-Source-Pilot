@@ -1,4 +1,7 @@
+import { readFileSync, writeFileSync } from "node:fs";
 import { loadConfig } from "./config.js";
+import { applyPrStates, type ContributionLog, type PrStates } from "./contributions.js";
+import { renderDigest } from "./digest.js";
 import { diversify, rankIssues } from "./score.js";
 import { client, fetchRepos, searchRepos } from "./search.js";
 import type { RankedIssue } from "./types.js";
@@ -22,7 +25,8 @@ async function find(args: string[]) {
   const cfg = loadConfig();
   const now = new Date();
   const gql = client();
-  const log = args.includes("--json") ? () => {} : (m: string) => process.stderr.write(m);
+  const quiet = args.includes("--json") || args.includes("--markdown");
+  const log = quiet ? () => {} : (m: string) => process.stderr.write(m);
 
   log("Searching for active repos with beginner issues...\n");
   const names = await searchRepos(gql, cfg, now);
@@ -35,6 +39,10 @@ async function find(args: string[]) {
 
   if (args.includes("--json")) {
     console.log(JSON.stringify({ generatedAt: now.toISOString(), top, excludedCount: excluded.length }, null, 2));
+    return;
+  }
+  if (args.includes("--markdown")) {
+    console.log(renderDigest(top, now));
     return;
   }
   const reasons = new Map<string, number>();
@@ -55,15 +63,39 @@ async function policy(repo: string | undefined) {
   for (const e of p.evidence) console.log(`  - ${e}`);
 }
 
+/** Update each logged PR's status from GitHub. Prints whether the file changed. */
+async function refreshContributions(path = "contributions.json") {
+  const log = JSON.parse(readFileSync(path, "utf8")) as ContributionLog;
+  const urls = log.contributions.map((c) => c.pr);
+  if (urls.length === 0) {
+    console.log("No contributions logged yet.");
+    return;
+  }
+  const query = urls
+    .map((url, i) => `c${i}: resource(url: ${JSON.stringify(url)}) { ... on PullRequest { url state mergedAt } }`)
+    .join("\n");
+  const res = await client()<Record<string, { url?: string; state?: string; mergedAt?: string | null } | null>>(
+    `query { ${query} }`,
+  );
+  const states: PrStates = {};
+  for (const pr of Object.values(res)) {
+    if (pr?.url && pr.state) states[pr.url] = { state: pr.state as PrStates[string]["state"], mergedAt: pr.mergedAt ?? null };
+  }
+  const { log: next, changed } = applyPrStates(log, states);
+  if (changed) writeFileSync(path, `${JSON.stringify(next, null, 2)}\n`);
+  console.log(changed ? "Updated contributions.json." : "No status changes.");
+}
+
 const [command, ...rest] = process.argv.slice(2);
 const commands: Record<string, () => Promise<void>> = {
   find: () => find(rest),
   policy: () => policy(rest[0]),
+  "refresh-contributions": () => refreshContributions(),
 };
 
 const run = command ? commands[command] : undefined;
 if (!run) {
-  console.log("Usage: tsx src/cli.ts <find [--json] | policy <owner/repo>>");
+  console.log("Usage: tsx src/cli.ts <find [--json | --markdown] | policy <owner/repo> | refresh-contributions>");
   process.exitCode = command ? 1 : 0;
 } else {
   run().catch((err: unknown) => {

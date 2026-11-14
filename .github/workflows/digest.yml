@@ -1,0 +1,56 @@
+name: Open source picks
+
+# Manual only while the project is parked. To get a daily digest, uncomment the schedule.
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "0 12 * * *" # daily, 12:00 UTC
+
+permissions:
+  contents: write # commit refreshed contributions.json
+  issues: write # create/update the digest issue
+
+concurrency:
+  group: digest
+  cancel-in-progress: false
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Rank issues
+        run: npx tsx src/cli.ts find --markdown > digest.md
+
+      - name: Update the digest issue
+        run: |
+          title="Open source picks"
+          number=$(gh issue list --state open --search "\"$title\" in:title" --json number,title \
+            --jq "map(select(.title == \"$title\"))[0].number // empty")
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file digest.md
+          else
+            gh issue create --title "$title" --body-file digest.md
+          fi
+
+      - name: Refresh contribution statuses
+        run: |
+          npx tsx src/cli.ts refresh-contributions
+          if ! git diff --quiet contributions.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "📝 docs: Refresh contribution statuses" contributions.json
+            git push
+          fi

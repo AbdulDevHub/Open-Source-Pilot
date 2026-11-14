@@ -7,18 +7,18 @@
 ```
 pilot.config.json        user settings (the only place to customise)
 contributions.json       contribution log; source of truth for site + status refresh
-src/cli.ts               entry: find [--json] | policy <owner/repo> (refresh-contributions planned)
+src/cli.ts               entry: find [--json | --markdown] | policy <owner/repo> | refresh-contributions
 src/types.ts             shared types incl. PilotConfig
 src/config.ts            loadConfig() with defaults for newer settings
 src/search.ts            the only network layer: repo search + batched GraphQL repo fetch (5 repos/query)
 src/signals.ts           pure: raw GraphQL repo/issue nodes → RepoSignals / IssueCandidate
 src/score.ts             pure: exclusion filters, weighted 0–100 score, rank, per-repo diversify
 src/policy.ts            pure: AI-policy classifier (sentence-level, text in → class out)
-src/digest.ts            render + upsert the rolling digest issue                  (planned)
-src/contributions.ts     refresh PR statuses in contributions.json                 (planned)
+src/digest.ts            pure: render the digest issue markdown (the Action upserts it with gh)
+src/contributions.ts     contributions.json types + pure applyPrStates (refresh reads live PR state via GraphQL resource(url))
 .claude/skills/oss-*     find → claim → fix → pr: the local Claude workflow (pr also handles review feedback)
-.github/workflows/       daily.yml (digest + refresh), pages.yml (site deploy)     (planned)
-site/                    Vite + TS page that reads contributions.json              (planned)
+.github/workflows/digest.yml  manual-only (schedule commented out while parked): digest issue + status refresh
+site/                    Vite + TS page that reads contributions.json   (planned, Phase 5)
 repos/                   cloned forks of external projects, gitignored
 ```
 
